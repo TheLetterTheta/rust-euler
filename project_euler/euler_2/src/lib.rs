@@ -6,32 +6,17 @@ mod tests {
 
     #[test]
     fn it_works_with_4() {
-        assert_eq!(go(4), 2);
+        assert_eq!(go(4), 188);
     }
 
     #[test]
     fn it_works_with_10() {
-        assert_eq!(go(10), 44);
+        assert_eq!(go(10), 1089154);
     }
 
     #[test]
     fn it_works_with_20() {
-        assert_eq!(go(20), 3382);
-    }
-
-    #[test]
-    fn it_works_with_30() {
-        assert_eq!(go(30), 1089154);
-    }
-
-    #[test]
-    fn it_works_with_32() {
-        assert_eq!(go(32), 1089154);
-    }
-
-    #[test]
-    fn it_works_with_33_last_overflow() {
-        assert_eq!(go(33), 4613732);
+        assert_eq!(go(20), 4613732);
     }
 
     #[test]

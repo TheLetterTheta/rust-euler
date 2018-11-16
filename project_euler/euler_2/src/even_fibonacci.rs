@@ -3,29 +3,48 @@
 // Project Euler #2
 pub fn go(n: u32) -> u64 {
 
-    let mut iter_prev: u32 = 1;
-    let mut iter_curr: u32 = 2;
-    let mut sum: u64 = 2;
+    let mut sum: u64 = 0;
 
-    if n < 3 {
-        return 0;
-    }
-
-    for _ in 3..n {
-
-        let t: u32 = iter_curr;
-        iter_curr = iter_prev + t;
-        iter_prev = t;
-
-        if iter_curr > 4000000 {
-            break;
-        }
-
-        if iter_curr % 2 == 0{
-            sum += iter_curr as u64;
-        }
-
+    for i in evenFibonacci().take(n as usize){
+        sum += i as u64;
     }
 
     return sum;
+}
+
+// Nicholas Dolan
+// 2018-11-16
+// Modification #1
+struct EvenFibonacci{
+    curr: u32,
+    next: u32
+}
+
+impl Iterator for EvenFibonacci {
+    type Item = u32;
+
+    fn next(&mut self) -> Option<u32> {
+
+        if self.next >= 4000000 {
+            return None
+        }
+
+        let t = self.curr + self.next;
+
+        self.curr = self.next;
+        self.next = t;
+
+        while self.curr % 2 != 0 {
+            let t = self.curr + self.next;
+
+            self.curr = self.next;
+            self.next = t;
+        }
+
+        Some(self.curr)
+    }
+}
+
+fn evenFibonacci() -> EvenFibonacci {
+    EvenFibonacci {curr: 1, next: 2}
 }
