@@ -6,11 +6,7 @@ fn largest_product_in_series(n: usize, s: String) -> u64{
 
     let mut largest_product: u64 = 1;
 
-    let slice_iterator = IncrementalStringSlice {
-        len : n,
-        s: s,
-        start_index: 0
-    };
+    let slice_iterator = IncrementalStringSlice::new(n, s);
 
     for i in slice_iterator {
         let mut curr_largest_product = 1;
@@ -26,20 +22,31 @@ fn largest_product_in_series(n: usize, s: String) -> u64{
 }
 
 struct IncrementalStringSlice {
-    len: usize,
-    s: String,
+    slice_size: usize,
+    increment_string: String,
     start_index: usize
+}
+
+impl IncrementalStringSlice {
+
+    fn new(slice_size: usize, increment_string: String) -> IncrementalStringSlice {
+        IncrementalStringSlice {
+            slice_size: slice_size,
+            increment_string: increment_string,
+            start_index: 0
+        }
+    }
 }
 
 impl Iterator for IncrementalStringSlice {
     type Item = String;
 
     fn next( &mut self ) -> Option<String> {
-        if (self.start_index + self.len) > self.s.len() {
+        if (self.start_index + self.slice_size) > self.increment_string.len() {
             return None;
         }
 
-        let ret: String = self.s.chars().skip(self.start_index).take(self.len).collect();
+        let ret: String = self.increment_string.chars().skip(self.start_index).take(self.slice_size).collect();
         self.start_index += 1;
 
         Some(ret)
