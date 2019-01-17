@@ -25,8 +25,7 @@ fn largest_product_in_series(n: usize, s: &str) -> u64{
 
 struct IncrementalStringSlice<'a> {
     slice_size: usize,
-    increment_string: &'a str//,
-    // start_index: usize
+    increment_string: &'a str
 }
 
 impl<'a> IncrementalStringSlice<'a> {
