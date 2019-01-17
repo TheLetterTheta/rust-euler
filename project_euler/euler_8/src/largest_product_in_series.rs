@@ -1,8 +1,10 @@
-pub fn go(n: usize, s: String) -> u64{
+use std::vec::IntoIter;
+
+pub fn go(n: usize, s: &str) -> u64{
     largest_product_in_series(n, s)
 }
 
-fn largest_product_in_series(n: usize, s: String) -> u64{
+fn largest_product_in_series(n: usize, s: &str) -> u64{
 
     let mut largest_product: u64 = 1;
 
@@ -21,34 +23,32 @@ fn largest_product_in_series(n: usize, s: String) -> u64{
     largest_product
 }
 
-struct IncrementalStringSlice {
+struct IncrementalStringSlice<'a> {
     slice_size: usize,
-    increment_string: String,
-    start_index: usize
+    increment_string: &'a str//,
+    // start_index: usize
 }
 
-impl IncrementalStringSlice {
-
-    fn new(slice_size: usize, increment_string: String) -> IncrementalStringSlice {
+impl<'a> IncrementalStringSlice<'a> {
+    fn new(slice_size: usize, increment_string: &'a str) -> IncrementalStringSlice{
         IncrementalStringSlice {
             slice_size: slice_size,
-            increment_string: increment_string,
-            start_index: 0
+            increment_string: increment_string
         }
     }
 }
 
-impl Iterator for IncrementalStringSlice {
-    type Item = String;
+impl<'a> IntoIterator for IncrementalStringSlice<'a> {
+    type Item = &'a str;
+    type IntoIter = IntoIter<&'a str>;
 
-    fn next( &mut self ) -> Option<String> {
-        if (self.start_index + self.slice_size) > self.increment_string.len() {
-            return None;
-        }
-
-        let ret: String = self.increment_string.chars().skip(self.start_index).take(self.slice_size).collect();
-        self.start_index += 1;
-
-        Some(ret)
+    fn into_iter(self) -> Self::IntoIter {
+        let end_of_iter = self.increment_string.len() - self.slice_size + 1;
+        (0..end_of_iter)
+            .map(|index|
+                    &self.increment_string[index..(index + self.slice_size)]
+            )
+            .collect::<Vec<&str>>()
+            .into_iter()
     }
 }
