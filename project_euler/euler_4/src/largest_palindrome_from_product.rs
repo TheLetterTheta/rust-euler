@@ -2,21 +2,15 @@
 // 2018-11-13
 // Euler project #4
 pub fn go(num_digits: u8) -> u32 {
-    let product: u32 = 10_u32.pow(num_digits as u32) - 1;
+    let product: u32 = 10_u32.pow(num_digits as u32);
 
-    for i in (0..product + 1).rev() {
-
-        for j in (i..product + 1).rev() {
-
-            if is_palindrome(i * j){
-                return i * j;
-            }
-
-        }
-
-    }
-
-    0
+    (1..product)
+        .flat_map(|i|
+                  (i..product)
+                  .map(move |j| j * i))
+        .filter(|n| is_palindrome(*n))
+        .max()
+        .unwrap()
 }
 
 fn is_palindrome(num: u32) -> bool {

@@ -12,6 +12,6 @@ mod tests {
 
     #[test]
     fn it_works_with_3() {
-        assert_eq!(go(3), 888888);
+        assert_eq!(go(3), 906609);
     }
 }
